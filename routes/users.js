@@ -1,9 +1,18 @@
 // importing express
-const { response } = require('express');
 const express = require('express');
 
 // initialize the router
 const router = express.Router();
+
+// importing bcrypt
+const bcrypt = require('bcryptjs')
+
+// passport
+const passport = require('passport');
+
+// User model
+const User = require('../models/User');
+
 
 // routes
 
@@ -46,9 +55,67 @@ router.post('/register', (req, res) => {
             password2
         });
     } else {
-        res.send('pass');
+        // validation successful
+        // checks to see if 1 email is being used to register for more than 1 accounts
+        User.findOne({ email: email })
+            .then(user => {
+                if (user) {
+                    // user exists
+                    errors.push({ message: 'Email already registered' })
+                    // res.render will render the view with data passed to it
+                    res.render('register', {
+                        errors,
+                        name,
+                        email,
+                        password,
+                        password2
+                    });
+                } else {
+                    const newUser = new User({
+                        name,
+                        email,
+                        password
+                    })
+
+                    // hashing the password
+                    // generating a salt to create a hash
+                    bcrypt.genSalt(10, (err, salt) => bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+
+                        // setting the user's password to hash
+                        newUser.password = hash;
+                        // Save user
+                        newUser.save()
+                            .then(user => {
+                                req.flash('success_message', 'Welcome! You are now logged in' );
+                                // res.redirect will redirect the user to another page(and a new req starts over)
+                                res.redirect('/users/login');
+                            })
+                            .catch(err => console.log(err))
+                    }))
+                }
+            });
     }
 });
+
+// login handle
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+})
+
+// logout handle
+router.get('/logout', (req, res) => {
+    // built in logout method in passport
+    req.logout();
+    // flash message to display the user successfully logged out
+    req.flash('success_message', 'Successfully logged out');
+    // redirect the user to login screen
+    res.redirect('/users/login');
+})
 
 // exporting the router
 module.exports = router;
