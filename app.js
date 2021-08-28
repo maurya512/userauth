@@ -3,6 +3,12 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+// importing flash to display messages when redirect occurs 
+const flash = require('connect-flash');
+const session = require('express-session');
+const passport = require('passport');
+// passport config
+require('./config/passport')(passport);
 
 // initiliaze the app
 const app = express();
@@ -21,6 +27,28 @@ app.set('view engine', 'ejs');
 
 // body parser
 app.use(express.urlencoded({ extended: false }));
+
+// express session
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// connect flash
+app.use(flash());
+
+// global vars 
+app.use((req, res, next) => {
+    res.locals.success_message = req.flash('success_message');
+    res.locals.error_message = req.flash('error_message');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 // setup a port for deployment
 const PORT = process.env.PORT || 5000;
