@@ -16,7 +16,7 @@ This app is deployed on heroku and so installation isn't required. Link for the 
 # Developer
 This app was created by [maurya](https://github.com/maurya512)
 
-# Demo Link
+# Demo
 Working demo link for the app can be found [here](https://drive.google.com/file/d/16Xsfv0Ksy2m9ZakNfqQZjsZ0sswafDLG/view)
 
 # Suggestions
