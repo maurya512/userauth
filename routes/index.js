@@ -1,3 +1,4 @@
+// importing express
 const express = require('express');
 
 // initializing the router using express Router
@@ -10,10 +11,12 @@ const { ensureAuthenticated } = require('../config/auth');
 // router.method (the route, (callback function)=>)
 // Welcome page
 router.get('/', (req, res) =>
+// renders the welcome.ejs page
     res.render('welcome'))
 
 // Dashboard page
 router.get('/dashboard', (req, res) =>
+// renders the dashboard.ejs page and the user name from the form
     res.render('dashboard', {
         name: req.user.name
     }))

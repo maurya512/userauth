@@ -1,6 +1,10 @@
+<!-- row with margin top 5 -->
 <div class="row mt-5">
+    <!-- med col 6 centered -->
     <div class="col-md-6 m-auto">
+        <!-- card and card body -->
         <div class="card card-body">
+            <!-- text centered       font awesome sign in logo -->
             <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login</h1>
             <!-- flash messages when user is 'redirected' from the register page -->
             <%- include ("./partials/messages"); %>
@@ -20,9 +24,11 @@
                     <!-- submit button -->
                     <button type="submit" class="btn btn-primary btn-block mt-2">Login</button>
                 </form>
+                <!-- check to see if no acct render user to register screen -->
                 <p class="lead mt-4">
                     No Acccount ? <a href="/users/register">Register</a>
                 </p>
+                <!-- render user to home screen -->
                 <p class="lead mt-2">
                     <a href="/">Home</a>
                 </p>

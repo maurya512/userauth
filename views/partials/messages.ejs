@@ -2,6 +2,7 @@
 <% if(typeof errors!='undefined' ) {%>
     <!-- if errors are found, loop through errors array and display each error message on the screen -->
     <% errors.forEach(function(error) { %>
+        <!-- display using the bootstrap dismissing alert package -->
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <!-- displays the pertaining error message -->
             <%= error.message %>

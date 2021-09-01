@@ -32,23 +32,28 @@ router.post('/register', (req, res) => {
 
     // check required fields 
     if (!name || !email || !password || !password2) {
+        // if a field is missing push an object to the errors array containing an error message
         errors.push({ message: 'Please fill in all fields' });
     }
 
     // check passwords match
     if (password !== password2) {
+        // if passwords don't match push an object to the errors array containing an error message
         errors.push({ message: 'Passwords do not match' });
     }
 
     // check if the password is at least 6 characters long
     if (password.length <= 5) {
+        // if password is less than 6 characters push an object to the errors array containing an error message
         errors.push({ message: 'Password must be at least 6 characters long' });
     }
 
     if (errors.length > 0) {
         // if any of the requirements are not met re render the register field
         res.render('register', {
+            // loop through and display error messages
             errors,
+            // user data so that the form doesn't clear completely even if all the data isn't validated yet
             name,
             email,
             password,
@@ -64,7 +69,9 @@ router.post('/register', (req, res) => {
                     errors.push({ message: 'Email already registered' })
                     // res.render will render the view with data passed to it
                     res.render('register', {
+                        // loop through each error message and display them simultaneously
                         errors,
+                        // render the page with data already filled in them
                         name,
                         email,
                         password,
